@@ -1,0 +1,8 @@
+@layer utilities {
+  .clip-path-user {
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+  }
+  .clip-path-other {
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+  }
+}

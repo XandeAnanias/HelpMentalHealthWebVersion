@@ -1,0 +1,35 @@
+@import "Tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+      
+body {
+        font-family: "Poppins", sans-serif;
+        background: #F9FAFB;
+        display: flex;
+        flex-direction: column;
+      }
+      .custom-select {
+        display: none;
+      }
+      .select-wrapper {
+        position: relative;
+      }
+      .select-trigger {
+        cursor: pointer;
+      }
+      .select-options {
+        display: none;
+        position: absolute;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 10;
+      }
+      .select-options.show {
+        display: block;
+      }
+      .select-option {
+        cursor: pointer;
+      }
+      .select-option:hover {
+        background-color: #f0f7ff;
+      }
