@@ -7,13 +7,17 @@ import InputGeneric from "../../../components/Inputs/inputGeneric.jsx";
 import Logo from "../../../assets/imagens/Logo.png";
 import img from "../../../assets/imagens/conversa.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function LoginUsuario() {
+
+  const navigate=useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    trigger
+    trigger,
+    setError
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -24,21 +28,23 @@ function LoginUsuario() {
       senha: data.senha,
     };
 
-    axios.post('http://localhost:8080/api-hmh/usuario/login-usuario', dadosFinal)
+    axios.post('http://localhost:8080/api-hmh/usuario/login', dadosFinal, {withCredentials:true})
       .then(response => {
         console.log('Login realizado com sucesso!', response.data);
-        alert('Login realizado com sucesso!');
-
-        // Exemplo: armazenar token no localStorage
-        localStorage.setItem('token', response.data.token);
-
-        // Redirecionar para a página principal, dashboard, etc.
-        window.location.href = '/welcome-usuario';
-
+        navigate("/welcome-usuario");
       })
       .catch(error => {
-        console.error('Erro no login:', error);
-        alert('E-mail ou senha incorretos!');
+        if (error.response && error.response.status >= 401) {
+          setError('geral', {
+            type: 'manual',
+            message: 'E-mail ou senha incorretos.',
+          });
+        } else {
+          setError('geral', {
+            type: 'manual',
+            message: 'Erro no servidor. Tente novamente mais tarde.',
+          });
+        }
       });
   };
 
@@ -81,6 +87,12 @@ function LoginUsuario() {
           <p className="font-sans text-gray-600 mb-8">
             Utilize o seu e-mail e senha cadastrados para entrar.
           </p>
+
+          {errors.geral && (
+            <div className="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700">
+              <p>{errors.geral.message}</p>
+            </div>
+          )}
 
           <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div className="block h-47">

@@ -4,8 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../../schemas/Psicologo/validationLogin.jsx";
 import Logo from '../../../assets/imagens/Logo.png';
 import img from '../../../assets/imagens/equipe-medica (1).png';
-import InputCpf from '../../../components/Inputs/InputCpf.jsx';
-import InputSenha from '../../../components/Inputs/InputSenha.jsx';
+import InputCpf from '../../../components/Inputs/inputCpf.jsx';
+import InputSenha from '../../../components/Inputs/inputSenha.jsx';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -30,21 +30,19 @@ function LoginPsicologo() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api-hmh/psicologo/login-psicologo', dadosFinal);
+      const response = await axios.post('http://localhost:8080/api-hmh/psicologo/login', dadosFinal, {withCredentials:true} );
       
       console.log('Login realizado com sucesso:', response.data);
-      
-      // Exemplo: Salvar token/localStorage ou navegação
-      // localStorage.setItem('token', response.data.token);
-      navigate('/dashboard-psicologo');  // Direciona para dashboard após login
+
+      navigate('/welcome-psicologo');  
       
     } catch (error) {
       console.error('Erro ao fazer login:', error);
 
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status >= 401) {
         setError('geral', {
           type: 'manual',
-          message: 'CPF ou senha inválidos.',
+          message: 'CPF ou senha incorretos.',
         });
       } else {
         setError('geral', {
@@ -140,8 +138,7 @@ function LoginPsicologo() {
             </div>
 
             <div>
-              <button
-                type="submit"
+              <button type='submit'
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#264466] 
                 hover:bg-[#1a2f45] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#264466] transition duration-200 cursor-pointer"
               >
@@ -152,7 +149,7 @@ function LoginPsicologo() {
             <div>
               <button
                 type="button"
-                onClick={() => navigate('/cadastro-psicologo')}
+                onClick={() => navigate('/cadastro-psicologo')} 
                 className="w-full flex justify-center py-3 px-4 border-2 rounded-lg shadow-sm text-sm 
                 font-medium text-[#264466] bg-white border-[#264466] hover:bg-[#1a2f45]
                 hover:text-white hover:border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2

@@ -9,14 +9,17 @@ import InputSenha from '../../../components/Inputs/inputSenha.jsx';
 import InputGeneric from '../../../components/Inputs/inputGeneric.jsx';
 import SelectEstadoComCRP from "../../../components/Inputs/inputEstados.jsx";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CadastroPsicologo() {
 
+  const navigate=useNavigate();
   const {
       register,
       handleSubmit,
       formState: { errors },
       trigger,
+      setError,
       control
     } = useForm({
       resolver: yupResolver(schema),
@@ -31,16 +34,16 @@ function CadastroPsicologo() {
         senha: data.senha,
       };
   
-      axios.post('http://localhost:8080/api-hmh/psicologo/registra-psicologo', dadosFinal)
+      axios.post('http://localhost:8080/api-hmh/psicologo/cadastro', dadosFinal, {withCredentials:true})
         .then(response => {
           console.log('Psicólogo cadastrado com sucesso!', response.data);
-          alert('Cadastro realizado com sucesso!');
-          // Redirecionamento ou limpar formulário, se desejar
+          navigate("/login-psicologo");
         })
-        .catch(error => {
-          console.error('Erro ao cadastrar psicólogo:', error);
-          alert('Erro no cadastro! Verifique os dados e tente novamente.');
-        });
+        .catch(() => {
+          setError('geral', {
+            type: 'manual',
+            message: 'Erro no servidor. Tente novamente mais tarde.',
+          })});
     };
   
     const handleBlur = async (field) => {
@@ -79,6 +82,12 @@ function CadastroPsicologo() {
               Help Mental Health
             </h2>
           </div>
+
+          {errors.geral && (
+            <div className="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700">
+              <p>{errors.geral.message}</p>
+            </div>
+          )}
 
           {/* Formulário */}
           <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>

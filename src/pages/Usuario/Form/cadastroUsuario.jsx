@@ -7,15 +7,18 @@ import img from "../../../assets/imagens/conversa.png";
 import InputGeneric from "../../../components/Inputs/inputGeneric.jsx";
 import InputSenha from "../../../components/Inputs/inputSenha.jsx";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function   CadastroUsuario() {
 
+  const navigate=useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    trigger
+    trigger,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -27,17 +30,16 @@ export default function   CadastroUsuario() {
       senha: data.senha,
     };
 
-    axios.post('http://localhost:8080/api-hmh/usuario/registra-usuario', dadosFinal)
+    axios.post('http://localhost:8080/api-hmh/usuario/cadastro', dadosFinal, {withCredentials:true})
       .then(response => {
         console.log('Usuário cadastrado com sucesso!', response.data);
-        alert('Cadastro realizado com sucesso!');
-        // Redirecionar para a página principal, dashboard, etc.
-        window.location.href = '/login-usuario';
+        navigate('/login-usuario');
       })
-      .catch(error => {
-        console.error('Erro ao cadastrar usuário:', error);
-        alert('Erro no cadastro!');
-      });
+      .catch(() => {
+        setError('geral', {
+          type: 'manual',
+          message: 'Erro no servidor. Tente novamente mais tarde.',
+        })});
   };
 
   const handleBlur = async (field) => {
@@ -81,7 +83,7 @@ export default function   CadastroUsuario() {
 
           {errors.geral && (
             <div className="mb-4 p-3 bg-red-100 border-l-4 border-red-500 text-red-700">
-              <p>{errors.geral}</p>
+              <p>{errors.geral.message}</p>
             </div>
           )}
 

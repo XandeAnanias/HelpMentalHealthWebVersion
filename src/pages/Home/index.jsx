@@ -55,6 +55,8 @@ function Home(){
       </div>
     </section>
 
+    <span  id="voce"></span>
+
     {/* <!-- Seção Para Você --> */}
     <section className="py-16 bg-gray-100">
       <div className="container mx-auto px-6">
@@ -63,7 +65,6 @@ function Home(){
             <img
               src={foto1}
               alt="Saúde mental para você"
-              id="voce"
               className="rounded-lg shadow-xl"
             />
           </div>
@@ -84,6 +85,8 @@ function Home(){
       </div>
     </section>
 
+    <span id="profissional"></span>
+
     {/* <!-- Seção Para Profissionais --> */}
     <section className="py-16 bg-gray-100">
       <div className="container mx-auto px-6">
@@ -92,7 +95,6 @@ function Home(){
             <img
               src={foto2}
               alt="Saúde mental para você"
-              id="profissional"
               className="rounded-lg shadow-xl"
             />
           </div>
