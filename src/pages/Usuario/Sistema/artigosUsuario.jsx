@@ -1,13 +1,16 @@
-import Sidebar from '../../../components/containers/usuario/sidebar';
-import Artigo from '../../../components/containers/usuario/artigo';
+import Sidebar from '@/components/containers/usuario/sidebar';
+import Artigo from '@/components/containers/usuario/artigo';
+import { ArtigosProvider } from '@/context/artigoContext.jsx'; // Novo import
 
 export default function ArtigoUsuario(){
-return(
-        <div className="flex min-h-screen">
-            <Sidebar></Sidebar>
+  return(
+    <ArtigosProvider>
+      <div className="flex min-h-screen">
+        <Sidebar />
         <div className="flex-1">
-            <Artigo></Artigo>
+          <Artigo />
         </div>
-    </div>
-)
+      </div>
+    </ArtigosProvider>
+  )
 }
